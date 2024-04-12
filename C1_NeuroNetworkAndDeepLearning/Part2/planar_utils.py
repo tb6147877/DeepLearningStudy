@@ -6,19 +6,21 @@ import sklearn.linear_model
 
 def plot_decision_boundary(model, X, y):
     # Set min and max values and give it some padding
-    x_min, x_max = X[0, :].min() - 1, X[0, :].max() + 1
-    y_min, y_max = X[1, :].min() - 1, X[1, :].max() + 1
+    x_min, x_max = X[0, :].min() - 1, X[0, :].max() + 1#横坐标的范围是所有点中横坐标最小的点再减一格，横坐标最大的点再加一格
+    y_min, y_max = X[1, :].min() - 1, X[1, :].max() + 1#纵坐标
     h = 0.01
-    # Generate a grid of points with distance h between them
+    # Generate a grid of points with distance h between them 在这个范围内，每隔h0.01，生成一个点阵
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+    print(xx.shape)
+    print(yy.shape)
     # Predict the function value for the whole grid
-    Z = model(np.c_[xx.ravel(), yy.ravel()])
+    Z = model(np.c_[xx.ravel(), yy.ravel()])#ravel()的作用是将数组拉成1维数组，_c的意思是按行连接两个矩阵，_r的意思是按列连接两个矩阵
     Z = Z.reshape(xx.shape)
     # Plot the contour and training examples
-    plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)
+    plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)#画颜色区域
     plt.ylabel('x2')
     plt.xlabel('x1')
-    plt.scatter(X[0, :], X[1, :], c=y, cmap=plt.cm.Spectral)
+    plt.scatter(X[0, :], X[1, :], c=y, cmap=plt.cm.Spectral)#画数据集中的点
     
 
 def sigmoid(x):

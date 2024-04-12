@@ -28,6 +28,11 @@ X, Y = load_planar_dataset()
 # Your goal is to build a model to fit this data. In other words, we want the classifier to define regions as either red or blue.
 plt.scatter(X[0, :], X[1, :], c=Y, s=40, cmap=plt.cm.Spectral);
 pylab.show()
+'''
+The shape of X is: (2, 400)
+The shape of Y is: (1, 400)
+这说明整个数据集有400个数据，每个数据中，X是横纵坐标，Y是Label(red or blue)
+'''
 
 # How many training examples do you have? In addition, what is the shape of the variables X and Y?
 shape_X = X.shape
@@ -42,8 +47,13 @@ Before building a full neural network, let's check how logistic regression perfo
 You can use sklearn's built-in functions for this. Run the code below to train a logistic regression classifier on the dataset.
 '''
 # Train the logistic regression classifier
+'''
+sklearn provides simple and efficient tools for data mining and data analysis.
+所以我们可以直接用sklearn这个库里面自带的封装好的逻辑回归函数来处理数据
+不过画图还是要用plot
+'''
 clf = sklearn.linear_model.LogisticRegressionCV();
-clf.fit(X.T, Y.T);
+clf.fit(X.T, Y.T);#fit就是训练
 
 # Plot the decision boundary for logistic regression
 plot_decision_boundary(lambda x: clf.predict(x), X, Y)
@@ -94,7 +104,9 @@ def initialize_parameters(n_x, n_h, n_y):
     """
 
     np.random.seed(2)  # we set up a seed so that your output matches ours although the initialization is random.
-
+    '''
+    这里直接这么写是因为这个例子中一共就两层，一个隐藏层一个输出层
+    '''
     ### START CODE HERE ### (≈ 4 lines of code)
     W1 = np.random.randn(n_h, n_x) * 0.01
     b1 = np.zeros((n_h, 1))
@@ -176,6 +188,10 @@ def compute_cost(A2, Y, parameters):
     logprobs = np.multiply(Y, np.log(A2)) + np.multiply((1 - Y), np.log(1 - A2))
     cost = (-1 / m) * np.sum(logprobs)
 
+    #使用作业资料中的loss计算的结果基本和使用课程视频中的loss是一样的，到底什么是cross-entropy loss，这个问题还要弄清楚
+    #logprobs = np.multiply(np.log(A2), Y)
+    #cost = - np.sum(logprobs)
+
     cost = float(np.squeeze(cost))  # makes sure cost is the dimension we expect.
     # E.g., turns [[17]] into 17
     assert (isinstance(cost, float))
@@ -216,6 +232,9 @@ def backward_propagation(parameters, cache, X, Y):
     dZ2 = A2 - Y
     dW2 = (1 / m) * np.dot(dZ2, A1.T)
     db2 = (1 / m) * (np.sum(dZ2, axis=1, keepdims=True))
+    '''
+    dZ1的计算比较复杂，它是隐藏层的一个值，详情参见公式
+    '''
     dZ1 = np.dot(W2.T, dZ2) * (1 - np.power(A1, 2))
     dW1 = (1 / m) * (np.dot(dZ1, X.T))
     db1 = (1 / m) * (np.sum(dZ1, axis=1, keepdims=True))
@@ -278,6 +297,7 @@ def nn_model(X, Y, n_h, learning_rate, num_iterations=10000, print_cost=False):
     b1 = parameters["b1"]
     W2 = parameters["W2"]
     b2 = parameters["b2"]
+    print("W1"+str(W1.shape))
 
     # Loop (gradient descent)
     for i in range(0, num_iterations):
@@ -315,10 +335,10 @@ def predict(parameters, X):
     return predictions
 
 # Build a model with a n_h-dimensional hidden layer
-parameters = nn_model(X, Y, 4, 1.2 , num_iterations = 10000, print_cost=True)
+parameters = nn_model(X, Y, 4, 1.2 , num_iterations = 10000, print_cost=True)#这里相当于我用训练集训练
 
 # Plot the decision boundary
-plot_decision_boundary(lambda x: predict(parameters, x.T), X, Y)
+plot_decision_boundary(lambda x: predict(parameters, x.T), X, Y)#这里相当于我用测试集测试
 plt.title("Decision Boundary for hidden layer size " + str(4))
 pylab.show()
 

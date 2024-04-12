@@ -21,6 +21,10 @@ train_set_x_orig, train_set_y, test_set_x_orig, test_set_y, classes = load_datas
 # show image
 index = 2
 plt.imshow(train_set_x_orig[index])
+print(train_set_y.shape)
+print(classes.shape)
+print(train_set_y[:, index])
+print(np.squeeze(train_set_y[:, index]))
 print("y = " + str(train_set_y[:, index]) + ", it's a '" + classes[np.squeeze(train_set_y[:, index])].decode("utf-8") + "' picture.")
 pylab.show()
 
