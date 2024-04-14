@@ -12,7 +12,7 @@ plt.rcParams['image.cmap'] = 'gray'
 
 np.random.seed(1)
 
-
+# 这里只是初始化两层神经网络的参数，所以直接写就行
 # GRADED FUNCTION: initialize_parameters
 def initialize_parameters(n_x, n_h, n_y):
     """
@@ -50,7 +50,8 @@ def initialize_parameters(n_x, n_h, n_y):
 
     return parameters
 
-
+# 这里是初始化N层神经网络的参数，关键信息就是这个layer_dims，这是一个数组存储了神经网络每层都有多少神经元
+# 然后初始化的结果存储在一个字典里
 # GRADED FUNCTION: initialize_parameters_deep
 def initialize_parameters_deep(layer_dims):
     """
@@ -78,9 +79,8 @@ def initialize_parameters_deep(layer_dims):
 
     return parameters
 
-
+# 这个函数只是计算一个Linear
 # GRADED FUNCTION: linear_forward
-
 def linear_forward(A, W, b):
     """
     Implement the linear part of a layer's forward propagation.
@@ -101,7 +101,7 @@ def linear_forward(A, W, b):
 
     return Z, cache
 
-
+# 这个函数把linear和activation两个过程合起来了，并且可以传入一个指定的activation函数类型
 # GRADED FUNCTION: linear_activation_forward
 def linear_activation_forward(A_prev, W, b, activation):
     """
@@ -155,16 +155,19 @@ def L_model_forward(X, parameters):
     A = X
     L = len(parameters) // 2  # number of layers in the neural network
 
+    # 这里是计算多个隐藏层，缓存用于反向传播
     # Implement [LINEAR -> RELU]*(L-1). Add "cache" to the "caches" list.
     for l in range(1, L):
         A_prev = A
-        A, cache = linear_activation_forward(A_prev, parameters['W{:d}'.format(l)], parameters['b{:d}'.format(l)], activation='relu')
+        A, cache = linear_activation_forward(A_prev, parameters['W{:d}'.format(l)], parameters['b{:d}'.format(l)], activation='relu') # {:d}是一个格式说明占位符，说明这里要填十进制整数，后面的format(l)就是用于填这个占位符的
         caches.append(cache)
 
+    # 这里是计算最后的输出层，缓存用于反向传播
     # Implement LINEAR -> SIGMOID. Add "cache" to the "caches" list.
     AL, cache = linear_activation_forward(A, parameters['W%d' % L], parameters['b%d' % L], activation='sigmoid')
     caches.append(cache)
 
+    # AL的元素数量要与样本数量相同，也就是说每个样本算出来一个activation
     assert (AL.shape == (1, X.shape[1]))
 
     return AL, caches
@@ -193,7 +196,7 @@ def compute_cost(AL, Y):
 
     return cost
 
-
+# 这里是linear backward
 # GRADED FUNCTION: linear_backward
 def linear_backward(dZ, cache):
     """
@@ -241,7 +244,7 @@ print(np.sum(A, axis=0, keepdims=True))
 print('axis=0 and keepdims=False')
 print(np.sum(A, axis=0, keepdims=False))
 
-
+# 这里是先算activation backward， 再算linear backward，正好跟正向传播顺序相反
 # GRADED FUNCTION: linear_activation_backward
 def linear_activation_backward(dA, cache, activation):
     """
@@ -294,17 +297,17 @@ def L_model_backward(AL, Y, caches):
     m = AL.shape[1]
     Y = Y.reshape(AL.shape)  # after this line, Y is the same shape as AL
 
-    # Initializing the backpropagation
+    # Initializing the backpropagation 初始化dAL
     dAL = - (np.divide(Y, AL) - np.divide(1 - Y, 1 - AL))
 
+    # 先把输出层反向传播算出来
     # Lth layer (SIGMOID -> LINEAR) gradients. Inputs: "dAL, current_cache". Outputs: "grads["dAL-1"], grads["dWL"], grads["dbL"]
     current_cache = caches[L - 1]
-    grads["dA" + str(L - 1)], grads["dW" + str(L)], grads["db" + str(L)] = linear_activation_backward(dAL,
-                                                                                                      current_cache,
-                                                                                                      'sigmoid')
+    grads["dA" + str(L - 1)], grads["dW" + str(L)], grads["db" + str(L)] = linear_activation_backward(dAL, current_cache,'sigmoid')
 
+    # 再算各个隐藏层的反向传播
     # Loop from l=L-2 to l=0
-    for l in reversed(range(L - 1)):
+    for l in reversed(range(L - 1)): # reversed用于反转循环方向
         # lth layer: (RELU -> LINEAR) gradients.
         # Inputs: "grads["dA" + str(l + 1)], current_cache". Outputs: "grads["dA" + str(l)] , grads["dW" + str(l + 1)] , grads["db" + str(l + 1)]
         current_cache = caches[l]
@@ -333,7 +336,7 @@ def update_parameters(parameters, grads, learning_rate):
 
     L = len(parameters) // 2  # number of layers in the neural network
 
-    # Update rule for each parameter. Use a for loop.
+    # Update rule for each parameter. Use a for loop. 逐层更新参数
     for l in range(L):
         parameters["W" + str(l + 1)] = parameters["W" + str(l + 1)] - learning_rate * grads["dW" + str(l + 1)]
         parameters["b" + str(l + 1)] = parameters["b" + str(l + 1)] - learning_rate * grads["db" + str(l + 1)]
