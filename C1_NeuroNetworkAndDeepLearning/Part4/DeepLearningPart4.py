@@ -170,9 +170,8 @@ predictions_test = predict(test_x, test_y, parameters)
 ### CONSTANTS ###
 layers_dims = [12288, 20, 7, 5, 1] #  4-layer model
 
-
+# L层模型跟2层模型基本结构一致，把基础函数封装好，全是调用这些基础函数，L层基本上就是在正向传播和反向传播的位置套一层循环
 # GRADED FUNCTION: L_layer_model
-
 def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, print_cost=False):
     """
     Implements a L-layer neural network: [LINEAR->RELU]*(L-1)->LINEAR->SIGMOID.

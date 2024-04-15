@@ -215,6 +215,7 @@ def plot_decision_boundary(model, X, y):
     Z = model(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
     # Plot the contour and training examples
+
     plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)
     plt.ylabel('x2')
     plt.xlabel('x1')
@@ -235,7 +236,7 @@ def predict_dec(parameters, X):
     
     # Predict using forward propagation and a classification threshold of 0.5
     a3, cache = forward_propagation(X, parameters)
-    predictions = (a3>0.5)
+    predictions = (a3 > 0.5) * 1 # 这里乘1可以把bool类型转成int类型
     return predictions
 
 def load_dataset():

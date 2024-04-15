@@ -16,6 +16,8 @@ def plot_decision_boundary(model, X, y):
     # Predict the function value for the whole grid
     Z = model(np.c_[xx.ravel(), yy.ravel()])#ravel()的作用是将数组拉成1维数组，_c的意思是按行连接两个矩阵，_r的意思是按列连接两个矩阵
     Z = Z.reshape(xx.shape)
+    print("wdw")
+    print(Z)
     # Plot the contour and training examples
     plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)#画颜色区域
     plt.ylabel('x2')

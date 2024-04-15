@@ -103,7 +103,7 @@ def initialize_parameters_zeros(layers_dims):
 
     return parameters
 
-'''
+
 # zero initialization execution
 parameters = initialize_parameters_zeros([3, 2, 1])
 print("W1 = " + str(parameters["W1"]))
@@ -123,7 +123,7 @@ axes.set_xlim([-1.5,1.5])
 axes.set_ylim([-1.5,1.5])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 plt.show()
-'''
+
 
 
 # GRADED FUNCTION: initialize_parameters_random
@@ -214,7 +214,7 @@ def initialize_parameters_he(layers_dims):
 
     return parameters
 
-'''
+
 # he initialization execution
 parameters = initialize_parameters_he([2, 4, 1])
 print("W1 = " + str(parameters["W1"]))
@@ -234,4 +234,3 @@ axes.set_xlim([-1.5,1.5])
 axes.set_ylim([-1.5,1.5])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 plt.show()
-'''
