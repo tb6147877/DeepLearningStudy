@@ -216,7 +216,9 @@ def gradient_check_n(parameters, gradients, X, Y, epsilon=1e-7, print_msg=False)
     """
 
     # Set-up variables
+    print(parameters)
     parameters_values, _ = dictionary_to_vector(parameters)
+    print(parameters_values)
 
     grad = gradients_to_vector(gradients)
     num_parameters = parameters_values.shape[0]

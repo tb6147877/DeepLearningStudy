@@ -188,7 +188,7 @@ def predict(X, y, parameters):
     """
     
     m = X.shape[1]
-    p = np.zeros((1,m), dtype = np.int)
+    p = np.zeros((1,m), dtype = np.int64)
     
     # Forward propagation
     a3, caches = forward_propagation(X, parameters)
@@ -250,7 +250,7 @@ def predict_dec(parameters, X):
     
     # Predict using forward propagation and a classification threshold of 0.5
     a3, cache = forward_propagation(X, parameters)
-    predictions = (a3 > 0.5)
+    predictions = (a3 > 0.5) * 1
     return predictions
 
 def load_dataset():
