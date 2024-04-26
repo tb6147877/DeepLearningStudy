@@ -480,6 +480,7 @@ def run_gradient_descent_feng(X,y,iterations=1000, alpha = 1e-6):
     m,n = X.shape
     # initialize parameters
     initial_w = np.zeros(n)
+    print(initial_w)
     initial_b = 0
     # run gradient descent
     w_out, b_out, hist_out = gradient_descent(X ,y, initial_w, initial_b,
